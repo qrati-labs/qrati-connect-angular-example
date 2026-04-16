@@ -1,1 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap');
+
+:root {
+  --brand-accent: #ff5d01;
+  --page-text: #111111;
+  --page-heading: #111111;
+  --page-muted: #57534e;
+  --page-bg:
+    radial-gradient(circle at top, rgba(255, 93, 1, 0.08), transparent 32%),
+    linear-gradient(180deg, #fffdfb 0%, #fff7f1 100%);
+  --toggle-border: rgba(24, 24, 27, 0.12);
+  --toggle-bg: rgba(255, 255, 255, 0.88);
+  --toggle-text: #52525b;
+  --toggle-border-hover: #111111;
+  --toggle-bg-hover: #111111;
+  --toggle-text-hover: #ffffff;
+  --pill-border: rgba(24, 24, 27, 0.12);
+  --pill-bg: rgba(255, 255, 255, 0.74);
+  --pill-text: #52525b;
+  --pill-border-hover: #111111;
+  --pill-bg-hover: #111111;
+  --pill-text-hover: #ffffff;
+  --widget-shell-bg: #ffffff;
+  --footer-heading: #18181b;
+  --footer-muted: #78716c;
+  --footer-link-hover: #18181b;
+}
+
+html {
+  color: var(--page-text);
+  background: var(--page-bg);
+  color-scheme: light;
+}
+
+html.dark {
+  --page-text: #f5f5f4;
+  --page-heading: #fafaf9;
+  --page-muted: #a8a29e;
+  --page-bg:
+    radial-gradient(circle at top, rgba(255, 93, 1, 0.06), transparent 32%),
+    linear-gradient(180deg, #111111 0%, #1c0e05 100%);
+  --toggle-border: rgba(255, 255, 255, 0.12);
+  --toggle-bg: rgba(24, 24, 27, 0.84);
+  --toggle-text: #d6d3d1;
+  --toggle-border-hover: rgba(255, 255, 255, 0.9);
+  --toggle-bg-hover: #ffffff;
+  --toggle-text-hover: #111111;
+  --pill-border: rgba(255, 255, 255, 0.1);
+  --pill-bg: rgba(38, 38, 38, 0.6);
+  --pill-text: #d6d3d1;
+  --pill-border-hover: rgba(255, 255, 255, 0.9);
+  --pill-bg-hover: #fafaf9;
+  --pill-text-hover: #111111;
+  --widget-shell-bg: #252629;
+  --footer-heading: #fafaf9;
+  --footer-muted: #a8a29e;
+  --footer-link-hover: #fafaf9;
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

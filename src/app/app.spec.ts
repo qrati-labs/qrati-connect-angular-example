@@ -18,6 +18,16 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, qrati-connect-angular-example');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Connect inside an Angular host site',
+    );
+  });
+
+  it('should render a theme toggle button', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.querySelector('[aria-label="Toggle dark mode"]')).toBeTruthy();
   });
 });
