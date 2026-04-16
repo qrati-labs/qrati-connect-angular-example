@@ -6,7 +6,8 @@
     "enabled": true
   },
   "assets": {
-    "directory": "dist/"
+    "directory": "dist/qrati-connect-angular-example/browser",
+    "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
     "nodejs_compat"

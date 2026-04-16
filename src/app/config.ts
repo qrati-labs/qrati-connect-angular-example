@@ -1,4 +1,4 @@
-const env = (import.meta as ImportMeta & { env: Record<string, string | undefined> }).env;
+const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env ?? {};
 
 const DEFAULT_EXAMPLE_ORG_ID = '69ad9c7876d8bf6f864b3a65';
 const DEFAULT_QRATI_SCRIPT_URL =
