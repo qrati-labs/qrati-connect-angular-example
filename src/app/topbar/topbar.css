@@ -1,0 +1,154 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.75rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--topbar-border);
+  background: var(--topbar-bg);
+  backdrop-filter: blur(14px);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--page-heading);
+}
+
+.topbar-brand img {
+  width: auto;
+  height: 1.75rem;
+}
+
+.topbar-brand span {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--toggle-border);
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
+  backdrop-filter: blur(14px);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  border-color: var(--toggle-border-hover);
+  background: var(--toggle-bg-hover);
+  color: var(--toggle-text-hover);
+}
+
+.theme-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.theme-icon.hidden {
+  display: none;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--brand-accent);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--page-text);
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.topbar-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.88;
+}
+
+.topbar-btn--filled {
+  border: none;
+  background: var(--brand-accent);
+  color: #ffffff;
+}
+
+.topbar-btn--outline {
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--pill-text);
+}
+
+.topbar-btn--outline:hover {
+  border-color: var(--pill-border-hover);
+  background: var(--pill-bg-hover);
+  color: var(--pill-text-hover);
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .user-name {
+    display: none;
+  }
+}

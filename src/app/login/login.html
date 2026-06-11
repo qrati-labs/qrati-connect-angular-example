@@ -1,0 +1,55 @@
+<div class="login-shell">
+  <div class="login-card">
+    <div class="login-brand">
+      <img
+        src="https://assets.qrati.com/images/qrati-connect-logo-square.png"
+        alt="Qrati Connect logo"
+        referrerpolicy="no-referrer"
+      />
+      <span>Qrati Connect</span>
+    </div>
+
+    <h1>Sign in</h1>
+    <p class="login-sub">Enter your details to continue.</p>
+
+    <form class="login-form" (ngSubmit)="submit()" #f="ngForm">
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input
+          id="fullName"
+          type="text"
+          name="fullName"
+          [(ngModel)]="fullName"
+          placeholder="Jane Doe"
+          autocomplete="name"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="jane@example.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      @if (error()) {
+        <p class="login-error" role="alert">{{ error() }}</p>
+      }
+
+      <button class="login-btn" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          Signing in…
+        } @else {
+          Sign in
+        }
+      </button>
+    </form>
+  </div>
+</div>

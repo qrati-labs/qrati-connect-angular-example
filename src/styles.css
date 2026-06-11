@@ -24,6 +24,8 @@
   --footer-heading: #18181b;
   --footer-muted: #78716c;
   --footer-link-hover: #18181b;
+  --topbar-bg: rgba(255, 253, 251, 0.88);
+  --topbar-border: rgba(24, 24, 27, 0.1);
 }
 
 html {
@@ -55,6 +57,8 @@ html.dark {
   --footer-heading: #fafaf9;
   --footer-muted: #a8a29e;
   --footer-link-hover: #fafaf9;
+  --topbar-bg: rgba(17, 17, 17, 0.88);
+  --topbar-border: rgba(255, 255, 255, 0.08);
   color-scheme: dark;
 }
 

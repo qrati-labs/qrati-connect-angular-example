@@ -13,41 +13,78 @@ The current demo includes:
 
 ```bash
 pnpm install
+cp .env.example .env   # then edit as needed
 pnpm start
 ```
 
 Open [http://localhost:4200](http://localhost:4200) to view the example.
 
+The app redirects to `/login` on first load. Enter any email and full name to log in — no real credentials are required.
+
 ## Environment Variables
 
-The app reads its runtime config from `src/app/config.ts`, which in turn uses Angular Vite env variables with sensible defaults.
+Copy `.env.example` to `.env` and fill in your values. The app reads config from `src/app/config.ts` using Angular Vite env variables with sensible defaults.
 
 ```bash
-NG_APP_EXAMPLE_ORG_ID=your_organization_id
-NG_APP_QRATI_SCRIPT_URL=https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@latest/element/web.es.js
+NG_APP_ORGANIZATION_ID=your_organization_id
+NG_APP_CDN_URL=https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@latest/element/web.es.js
+NG_APP_API_ENDPOINT=https://your-backend.example.com/api/qrati/demo-login
 ```
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `NG_APP_EXAMPLE_ORG_ID` | No | Organization ID for the embedded widget. Falls back to the demo org ID if omitted. |
-| `NG_APP_QRATI_SCRIPT_URL` | No | CDN URL for the Qrati Connect element bundle. Falls back to the public jsDelivr URL if omitted. |
+| `NG_APP_ORGANIZATION_ID` | No | Organization ID for the embedded widget. Falls back to the demo org ID if omitted. |
+| `NG_APP_CDN_URL` | No | CDN URL for the Qrati Connect element bundle. Falls back to the public jsDelivr URL if omitted. |
+| `NG_APP_API_ENDPOINT` | No | URL to POST login data (`userId`, `email`, `fullName`) to on form submit. Falls back to `https://qrati.com/api/qrati/demo-login` if omitted. The response body is ignored — auth state is set from form data regardless of the API result. |
 
 ## How It Works
 
 ### 1. Resolve config in `config.ts`
 
 ```ts
-const env = (import.meta as ImportMeta & { env: Record<string, string | undefined> }).env;
+const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env ?? {};
 
-export const EXAMPLE_ORG_ID = env['NG_APP_EXAMPLE_ORG_ID'] || 'your_default_org_id';
-export const QRATI_SCRIPT_URL =
-  env['NG_APP_QRATI_SCRIPT_URL'] ||
-  'https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@latest/element/web.es.js';
+export const EXAMPLE_ORG_ID   = env['NG_APP_ORGANIZATION_ID'] || 'your_default_org_id';
+export const QRATI_SCRIPT_URL = env['NG_APP_CDN_URL'] || 'https://cdn.jsdelivr.net/...';
+export const USER_LOGIN_API   = env['NG_APP_API_ENDPOINT'] || 'https://qrati.com/api/qrati/demo-login';
 ```
 
-### 2. Register the web component bundle
+### 2. Login flow
 
-The app injects the CDN script after the root component mounts:
+The app uses an `AuthService` backed by Angular Signals and `localStorage`.
+
+**Login page** (`/login`) collects email and full name, then:
+
+1. Computes a deterministic `userId` from the email using a djb2 hash — same email always produces the same 8-character hex string, with no async round-trip needed.
+2. POSTs `{ userId, email, fullName }` to `NG_APP_API_ENDPOINT`.
+3. Sets the `AuthUser` signal regardless of the API response (the response body is ignored; a network error falls back silently).
+4. Persists `{ email, fullName, userId }` to `localStorage` under `qc-auth-user`.
+5. Navigates to `/`.
+
+**Auth guard** on `/` redirects to `/login` if no user is present. On page refresh, `AuthService` rehydrates from `localStorage` automatically.
+
+**Logout** clears the signal and `localStorage`, then navigates back to `/login`.
+
+### 3. Pass user identity to the widget
+
+After login the `HomeComponent` reads the auth signal and passes user attributes down to the widget:
+
+```html
+<qrati-connect
+  [attr.organization-id]="orgId"
+  [attr.theme]="themeMode()"
+  [attr.user-id]="userId()"
+  [attr.fname]="fname()"
+  [attr.lname]="lname()"
+  router="hash"
+></qrati-connect>
+```
+
+`fname` is the first whitespace-delimited word of `fullName`; `lname` is the remainder. All three attributes are omitted from the DOM (bound to `null`) when no user is logged in.
+
+### 4. Register the web component bundle
+
+The `HomeComponent` injects the CDN script once on `ngAfterViewInit` and removes it on `ngOnDestroy`:
 
 ```ts
 ngAfterViewInit(): void {
@@ -60,17 +97,7 @@ ngAfterViewInit(): void {
 
 `CUSTOM_ELEMENTS_SCHEMA` is enabled so Angular accepts the `<qrati-connect>` custom element.
 
-### 3. Bind the element attributes from Angular
-
-```html
-<qrati-connect
-  [attr.organization-id]="orgId"
-  [attr.theme]="theme()"
-  router="hash"
-></qrati-connect>
-```
-
-### 4. Control theme from the host page
+### 5. Control theme from the host page
 
 The Angular host page maintains its own `light` or `dark` state, stores it in `localStorage` under `qc-theme`, toggles the document theme class, and passes the same value down to the widget through `[attr.theme]`.
 
@@ -92,7 +119,7 @@ Use these only when the target Qrati organization is configured for custom auth.
 
 | Prop | Required in Custom Auth Mode | Description |
 | --- | --- | --- |
-| `uid` | Yes | Stable user ID from your host application |
+| `user-id` | Yes | Stable user ID from your host application |
 | `fname` | Yes | User first name |
 | `lname` | Yes | User last name |
 
@@ -101,15 +128,15 @@ When custom auth is enabled, pass all three props together:
 ```html
 <qrati-connect
   [attr.organization-id]="orgId"
-  uid="user_123"
-  fname="Ada"
-  lname="Lovelace"
-  [attr.theme]="theme()"
+  [attr.user-id]="userId()"
+  [attr.fname]="fname()"
+  [attr.lname]="lname()"
+  [attr.theme]="themeMode()"
   router="hash"
 ></qrati-connect>
 ```
 
-If custom auth is enabled and one of `uid`, `fname`, or `lname` is missing, the widget treats the configuration as invalid.
+If custom auth is enabled and one of `user-id`, `fname`, or `lname` is missing, the widget treats the configuration as invalid.
 
 ## Authentication Modes
 
@@ -123,9 +150,12 @@ If your organization is configured for custom auth, the host Angular app must pr
 
 ## Tech Stack
 
-- **Angular 21**
+- **Angular 21** — standalone components, `provideRouter`, `provideHttpClient`
 - **TypeScript 5**
-- **Signals** for host-side theme state
+- **Angular Signals** — auth state, theme state, derived computed values
+- **Angular Router** — `/login` + `/` with functional auth guard
+- **HttpClient** — login API POST with RxJS `catchError` fallback
+- **localStorage** — auth and theme persistence across page refreshes
 - **Qrati Connect web component** loaded from CDN
 
 ## Learn More
