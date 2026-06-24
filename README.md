@@ -12,9 +12,9 @@ The current demo includes:
 ## Quick Start
 
 ```bash
-pnpm install
+bun install
 cp .env.example .env   # then edit as needed
-pnpm start
+bun start
 ```
 
 Open [http://localhost:4200](http://localhost:4200) to view the example.
