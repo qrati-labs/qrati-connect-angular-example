@@ -5,6 +5,6 @@ import { Login } from './login/login';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
-  { path: '', component: Home},
+  { path: '', component: Home, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 ];
