@@ -1,183 +1,102 @@
 # Qrati Connect — Angular Example
 
-An Angular example that embeds the **Qrati Connect** web component from the CDN inside a branded host page.
+Embeds [Qrati Connect](https://qrati.com) into an Angular application using the
+framework-agnostic **web component** (`<qrati-connect>`), with host-controlled
+light/dark theme synchronization, full SEO optimization, and zero backend configuration.
 
-The current demo includes:
+## Integration method: Web Component
 
-- A host-side light/dark mode toggle that updates the widget `theme`
-- External links to the example source and web editors
-- Footer marketing links
-- Support for both standard Qrati auth and host-provided custom auth
-
-## Quick Start
-
-```bash
-bun install
-cp .env.example .env   # then edit as needed
-bun start
-```
-
-Open [http://localhost:4200](http://localhost:4200) to view the example.
-
-The app redirects to `/login` on first load. Enter any email and full name to log in — no real credentials are required.
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and fill in your values. The app reads config from `src/app/config.ts` using Angular Vite env variables with sensible defaults.
-
-```bash
-NG_APP_ORGANIZATION_ID=your_organization_id
-NG_APP_CDN_URL=https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@latest/element/web.es.js
-NG_APP_API_ENDPOINT=https://your-backend.example.com/api/qrati/demo-login
-```
-
-| Variable | Required | Description |
-| --- | --- | --- |
-| `NG_APP_ORGANIZATION_ID` | No | Organization ID for the embedded widget. Falls back to the demo org ID if omitted. |
-| `NG_APP_CDN_URL` | No | CDN URL for the Qrati Connect element bundle. Falls back to the public jsDelivr URL if omitted. |
-| `NG_APP_API_ENDPOINT` | No | URL to POST login data (`userId`, `email`, `fullName`) to on form submit. Falls back to `https://qrati.com/api/qrati/demo-login` if omitted. The response body is ignored — auth state is set from form data regardless of the API result. |
-
-## How It Works
-
-### 1. Resolve config in `config.ts`
+Angular supports custom elements natively via `CUSTOM_ELEMENTS_SCHEMA`. Load the web component bundle and styles once on `ngAfterViewInit`, then render `<qrati-connect>` directly in your Angular template:
 
 ```ts
-const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env ?? {};
+import { Component, CUSTOM_ELEMENTS_SCHEMA, signal, AfterViewInit, OnDestroy } from '@angular/core';
+import { ORGANIZATION_ID, QRATI_SCRIPT_URL } from './config';
 
-export const EXAMPLE_ORG_ID   = env['NG_APP_ORGANIZATION_ID'] || 'your_default_org_id';
-export const QRATI_SCRIPT_URL = env['NG_APP_CDN_URL'] || 'https://cdn.jsdelivr.net/...';
-export const USER_LOGIN_API   = env['NG_APP_API_ENDPOINT'] || 'https://qrati.com/api/qrati/demo-login';
-```
+@Component({
+  selector: 'app-event-gallery',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: `
+    <qrati-connect
+      [attr.organization-id]="orgId"
+      [attr.theme]="theme()"
+      router="hash"
+    ></qrati-connect>
+  `,
+})
+export class EventGalleryComponent implements AfterViewInit, OnDestroy {
+  readonly orgId = ORGANIZATION_ID;
+  readonly theme = signal<'light' | 'dark'>('light');
 
-### 2. Login flow
+  private scriptEl?: HTMLScriptElement;
 
-The app uses an `AuthService` backed by Angular Signals and `localStorage`.
+  ngAfterViewInit(): void {
+    const styleUrl = QRATI_SCRIPT_URL.replace(/\/web\.es\.js$/, '/styles.css');
+    if (!document.querySelector(`link[href="${styleUrl}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = styleUrl;
+      document.head.appendChild(link);
+    }
 
-**Login page** (`/login`) collects email and full name, then:
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = QRATI_SCRIPT_URL;
+    document.head.appendChild(s);
+    this.scriptEl = s;
+  }
 
-1. Computes a deterministic `userId` from the email using a djb2 hash — same email always produces the same 8-character hex string, with no async round-trip needed.
-2. POSTs `{ userId, email, fullName }` to `NG_APP_API_ENDPOINT`.
-3. Sets the `AuthUser` signal regardless of the API response (the response body is ignored; a network error falls back silently).
-4. Persists `{ email, fullName, userId }` to `localStorage` under `qc-auth-user`.
-5. Navigates to `/`.
-
-**Auth guard** on `/` redirects to `/login` if no user is present. On page refresh, `AuthService` rehydrates from `localStorage` automatically.
-
-**Logout** clears the signal and `localStorage`, then navigates back to `/login`.
-
-### 3. Pass user identity to the widget
-
-After login the `HomeComponent` reads the auth signal and passes user attributes down to the widget:
-
-```html
-<qrati-connect
-  [attr.organization-id]="orgId"
-  [attr.theme]="themeMode()"
-  [attr.user-id]="userId()"
-  [attr.fname]="fname()"
-  [attr.lname]="lname()"
-  router="hash"
-></qrati-connect>
-```
-
-`fname` is the first whitespace-delimited word of `fullName`; `lname` is the remainder. All three attributes are omitted from the DOM (bound to `null`) when no user is logged in.
-
-### 4. Register the web component bundle
-
-The `HomeComponent` injects the CDN script once on `ngAfterViewInit` and removes it on `ngOnDestroy`:
-
-```ts
-ngAfterViewInit(): void {
-  const s = document.createElement('script');
-  s.type = 'module';
-  s.src = QRATI_SCRIPT_URL;
-  document.head.appendChild(s);
+  ngOnDestroy(): void {
+    this.scriptEl?.remove();
+  }
 }
 ```
 
-`CUSTOM_ELEMENTS_SCHEMA` is enabled so Angular accepts the `<qrati-connect>` custom element.
+## Features
 
-### 5. Control theme from the host page
+- **Drop-in Web Component**: Native Angular support for custom elements via `CUSTOM_ELEMENTS_SCHEMA` with reactive attribute bindings.
+- **Live Event Photo Wall**: Responsive masonry grid layout, blurhash loading placeholders, and full-screen lightbox with keyboard navigation.
+- **Guest Media Uploads**: Attendees scan a QR code to upload photos and videos directly with automatic client-side compression and HEIC conversion.
+- **Interactive Reactions & Leaderboards**: Live emoji reactions, star ratings, and real-time contest rankings.
+- **Host Theme Control**: Signal-based light and dark mode synchronization.
+- **GDPR & Consent Mode v2**: Integrated cookie consent banner with EU/EEA geo-lookup and Google Consent Mode v2 support.
+- **Cloudflare Subpath Routing**: Configured for `/connect/angular-example/` with SPA fallback and runtime GTM handling.
 
-The Angular host page maintains its own `light` or `dark` state, stores it in `localStorage` under `qc-theme`, toggles the document theme class, and passes the same value down to the widget through `[attr.theme]`.
+## Run Locally
 
-## Props
-
-### Core Props
-
-Use these in every integration.
-
-| Prop | Required | Default | Description |
-| --- | --- | --- | --- |
-| `organization-id` | Yes | — | Your Qrati organization ID |
-| `theme` | No | `light` | Widget theme: `light` or `dark` |
-| `router` | No | `memory` | Navigation mode: `memory` or `hash` |
-
-### Custom Auth Props
-
-Use these only when the target Qrati organization is configured for custom auth.
-
-| Prop | Required in Custom Auth Mode | Description |
-| --- | --- | --- |
-| `user-id` | Yes | Stable user ID from your host application |
-| `fname` | Yes | User first name |
-| `lname` | Yes | User last name |
-
-When custom auth is enabled, pass all three props together:
-
-```html
-<qrati-connect
-  [attr.organization-id]="orgId"
-  [attr.user-id]="userId()"
-  [attr.fname]="fname()"
-  [attr.lname]="lname()"
-  [attr.theme]="themeMode()"
-  router="hash"
-></qrati-connect>
+```bash
+pnpm install
+cp .env.example .env   # optional — sensible defaults are baked in
+pnpm dev
 ```
 
-If custom auth is enabled and one of `user-id`, `fname`, or `lname` is missing, the widget treats the configuration as invalid.
+## Configuration
 
-## Authentication Modes
+Set these in `.env` (all optional; the demo organization is used as a fallback):
 
-### Standard Qrati Auth
+| Variable                 | Description                                                        |
+| ------------------------ | ------------------------------------------------------------------ |
+| `NG_APP_ORGANIZATION_ID` | Your Qrati organization ID (defaults to public demo org)           |
+| `NG_APP_CDN_URL`         | CDN URL of the web-component bundle (`element/web.es.js`)          |
+| `GTM_ID`                 | Optional Google Tag Manager container ID                           |
 
-If you only provide `organization-id` and optional UI props such as `theme` and `router`, Qrati Connect uses its built-in authentication flow.
+## Build & Deploy
 
-### Custom Auth
+```bash
+# Build production client bundle
+pnpm build
 
-If your organization is configured for custom auth, the host Angular app must provide `uid`, `fname`, and `lname`. Qrati Connect then uses that host-provided identity rather than the built-in login flow.
+# Preview locally with Wrangler
+pnpm preview
 
-## Tech Stack
+# Deploy to Cloudflare Workers
+pnpm run deploy
+```
 
-- **Angular 21** — standalone components, `provideRouter`, `provideHttpClient`
-- **TypeScript 5**
-- **Angular Signals** — auth state, theme state, derived computed values
-- **Angular Router** — `/login` + `/` with functional auth guard
-- **HttpClient** — login API POST with RxJS `catchError` fallback
-- **localStorage** — auth and theme persistence across page refreshes
-- **Qrati Connect web component** loaded from CDN
+## Other Integration Methods
 
-## Learn More
+- **React Component** — `import QratiConnect from '@qratilabs/qrati-connect'` (see the React, Next.js, and Preact examples).
+- **Web Component** — `<qrati-connect>` (see the Svelte, Vue, Solid, Qwik, and Lit examples).
+- **Embed (no-code)** — single `<script>` tag with `data-*` attributes (see the Vanilla JS, Marko, and Ember examples).
 
-- [Qrati Connect on npm](https://www.npmjs.com/package/@qratilabs/qrati-connect)
-- [Angular documentation](https://angular.dev)
-- [Qrati website](https://qrati.com)
-
----
-
-### Open It In
-
-[View on GitHub](https://github.com/qrati-labs/qrati-connect-angular-example)
-
-[Open in StackBlitz](https://stackblitz.com/github/qrati-labs/qrati-connect-angular-example)
-
-[Open in CodeSandbox](https://codesandbox.io/s/github/qrati-labs/qrati-connect-angular-example)
-
-[Open in VS Code](https://vscode.dev/github/qrati-labs/qrati-connect-angular-example)
-
----
-
-### About Qrati
-
-**Qrati** helps organizations run more engaging event experiences with embeddable discovery, participation, and feedback tools that fit directly into their own products.
+Docs: <https://www.npmjs.com/package/@qratilabs/qrati-connect>

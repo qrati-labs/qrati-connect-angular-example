@@ -1,12 +1,7 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, OnDestroy, signal, inject, computed } from '@angular/core';
-import { EXAMPLE_ORG_ID, QRATI_SCRIPT_URL } from '../config';
-import { AuthService } from '../auth/auth.service';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, OnDestroy, inject } from '@angular/core';
+import { ORGANIZATION_ID, QRATI_SCRIPT_URL, GITHUB_ORG, REPO } from '../config';
 import { ThemeService } from '../theme/theme.service';
-
-
-
-const GITHUB_ORG = 'qrati-labs';
-const REPO = 'qrati-connect-angular-example';
+import { showCookiePreferences } from '../../lib/cookieConsent';
 
 @Component({
   selector: 'app-home',
@@ -16,35 +11,37 @@ const REPO = 'qrati-connect-angular-example';
   styleUrl: './home.css',
 })
 export class Home implements AfterViewInit, OnDestroy {
-  private readonly auth = inject(AuthService);
   private readonly theme = inject(ThemeService);
 
-  readonly orgId = EXAMPLE_ORG_ID;
+  readonly orgId = ORGANIZATION_ID;
   readonly repoUrl = `https://github.com/${GITHUB_ORG}/${REPO}`;
   readonly vscodeUrl = `https://vscode.dev/github/${GITHUB_ORG}/${REPO}`;
+  readonly npmUrl = 'https://www.npmjs.com/package/@qratilabs/qrati-connect';
   readonly currentYear = new Date().getFullYear();
 
-  readonly userId = computed(() => this.auth.user()?.userId ?? null);
-  readonly fname = computed(() => {
-    const name = this.auth.user()?.fullName?.trim();
-    if (!name) return null;
-    return name.split(/\s+/)[0];
-  });
-  readonly lname = computed(() => {
-    const parts = this.auth.user()?.fullName?.trim().split(/\s+/) ?? [];
-    return parts.length > 1 ? parts.slice(1).join(' ') : null;
-  });
+  readonly themeMode = this.theme.theme;
 
   private scriptEl?: HTMLScriptElement;
   private ownsScript = false;
 
-  readonly themeMode = this.theme.theme;
+  toggleTheme(): void {
+    this.theme.toggleTheme();
+  }
 
-
+  openCookiePreferences(): void {
+    showCookiePreferences();
+  }
 
   ngAfterViewInit(): void {
-    const existingScript = document.querySelector(`script[src="${QRATI_SCRIPT_URL}"]`);
+    const styleUrl = QRATI_SCRIPT_URL.replace(/\/web\.es\.js$/, '/styles.css');
+    if (!document.querySelector(`link[href="${styleUrl}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = styleUrl;
+      document.head.appendChild(link);
+    }
 
+    const existingScript = document.querySelector(`script[src="${QRATI_SCRIPT_URL}"]`);
     if (existingScript instanceof HTMLScriptElement) {
       this.scriptEl = existingScript;
       return;
@@ -63,6 +60,4 @@ export class Home implements AfterViewInit, OnDestroy {
       this.scriptEl?.remove();
     }
   }
-
-
 }

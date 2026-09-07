@@ -1,18 +1,16 @@
 import { Injectable, signal } from '@angular/core';
 
-type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   readonly theme = signal<ThemeMode>('light');
 
-  
-
-    constructor() {
+  constructor() {
     this.syncTheme(this.getInitialTheme());
   }
 
-    toggleTheme(): void {
+  toggleTheme(): void {
     this.syncTheme(this.theme() === 'dark' ? 'light' : 'dark');
   }
 
@@ -34,6 +32,7 @@ export class ThemeService {
 
     if (typeof document !== 'undefined') {
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
     }
 
     try {

@@ -29,6 +29,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/connect/angular-example/",
               "budgets": [
                 {
                   "type": "initial",

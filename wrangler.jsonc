@@ -1,12 +1,20 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "qrati-connect-angular-example",
-  "compatibility_date": "2026-04-16",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-07-06",
   "observability": {
     "enabled": true
   },
+  "routes": [
+    {
+      "pattern": "*qrati.com/connect/angular-example*",
+      "zone_name": "qrati.com"
+    }
+  ],
   "assets": {
     "directory": "dist/qrati-connect-angular-example/browser",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
