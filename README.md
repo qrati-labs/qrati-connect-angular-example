@@ -1,5 +1,9 @@
 # Qrati Connect — Angular Example
 
+[![Qrati Connect — embeddable event photo galleries](public/qrati-connect-og.png)](https://qrati.com/connect)
+
+Build live event photo galleries into Angular applications with guest uploads, full-screen lightbox, emoji reactions, and photo-contest leaderboards. [Explore Qrati Connect](https://qrati.com/connect) or [view the live Angular example](https://qrati.com/connect/angular-example).
+
 Embeds [Qrati Connect](https://qrati.com) into an Angular application using the
 framework-agnostic **web component** (`<qrati-connect>`), with host-controlled
 light/dark theme synchronization, full SEO optimization, and zero backend configuration.
