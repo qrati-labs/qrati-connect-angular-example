@@ -774,3 +774,22 @@ html.dark #cc-main,
 .footer-cookie-btn:hover {
   color: var(--footer-link-hover);
 }
+/* Pilot design parity */
+.theme-toggle { position: absolute; z-index: 1; }
+.page-shell { position: relative; }
+.answer-section { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; margin-top: 4.5rem; padding: 2rem; border: 1px solid #ff480044; border-radius: 1.5rem; background: #ff48000d; }
+.answer-section h2,.seo-section h2 { color: var(--page-heading, var(--heading)); }
+.answer-section p,.section-intro,.feature-map-card p,.seo-feature-card p,.faq-list p,.seo-cta-card p { color: var(--page-muted, var(--muted)); line-height: 1.7; }
+.answer-points { display: grid; gap: .7rem; color: var(--page-heading, var(--heading)); font-weight: 600; }
+.feature-map-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(15rem,1fr)); gap: 1rem; margin-top: 2rem; text-align: left; }
+.feature-map-card { padding: 1.35rem; border: 1px solid #8884; border-radius: 1.25rem; background: var(--card-bg, var(--card)); transition: transform 180ms ease,border-color 180ms ease; }
+.feature-map-card:hover { transform: translateY(-3px); border-color: #ff480066; }
+.feature-map-heading { display: flex; align-items: center; gap: .7rem; }
+.feature-map-heading h3 { margin: 0; color: var(--page-heading, var(--heading)); }
+.feature-map-heading iconify-icon,.seo-feature-icon,.seo-feature-card > iconify-icon { color: var(--brand-accent, var(--accent)); font-size: 1.5rem; flex: none; }
+.seo-feature-card > iconify-icon { display: block; margin-bottom: .8rem; padding: .5rem; border-radius: .75rem; background: #ff480014; }
+.seo-cta-card { padding: clamp(2rem,5vw,4rem); border: 1px solid #ff480066; border-radius: 1.75rem; background: radial-gradient(circle at 10% 0,#ff48002b,transparent 45%),var(--card-bg, var(--card)); box-shadow: 0 1.5rem 4rem #ff48001c; }
+.btn-cta-primary { display: inline-flex; align-items: center; gap: .5rem; transition: transform 180ms ease,box-shadow 180ms ease; }
+.btn-cta-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 .8rem 2rem #ff480055; }
+@media (max-width: 640px) { .answer-section { grid-template-columns: 1fr; padding: 1.35rem; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
