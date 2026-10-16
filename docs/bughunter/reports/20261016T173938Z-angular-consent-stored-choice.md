@@ -26,9 +26,11 @@ Added `src/lib/cookieConsent.spec.ts`:
 
 Intended command: `pnpm exec vitest run src/lib/cookieConsent.spec.ts` — **NOT RUN BY BUGHUNTER**. No tests, builds, lint, type-checks, installs, or package manager commands were run. `git diff --cached --check` passed.
 
+- PR: https://github.com/qrati-labs/qrati-connect-angular-example/pull/4 (open; mergeable; base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`; initial head `5500a380abbe24a156c0efdfa23fe1d010a1f527`; verified `Fixes #3` and closing issue reference).
+
 ## Limitations and disposition
 
-The regression tests were authored but not executed per BugHunter's execution boundary. CI for this new PR has not yet been observed. No production state was changed and the PR will not be merged.
+The regression tests were authored but not executed per BugHunter's execution boundary. The PR's Workers Builds check was in progress at the one observed PR check read (started `2026-10-16T17:44:57Z`); no test result was available. A documentation-only follow-up may trigger another check run; that later state was not checked. No production state was changed and the PR will not be merged.
 
 ## Timing
 
