@@ -31,8 +31,8 @@ Google Tag Platform documentation says to scope default settings to regions wher
 - Tests/build/lint/type-check/package-manager commands: NOT RUN BY BUG HUNTER (cron policy).
 - Intended developer/CI test command: `pnpm test` (script resolves to `ng test --watch=false`; not run here).
 - Issue: none (report-only).
-- PR: [#2](https://github.com/qrati-labs/qrati-connect-angular-example/pull/2), open; head `5d8c421998c8225455ffb9d992a31c6325081067`; mergeable. Read-back confirmed no issue linkage is applicable (report-only).
-- Checks read once: GitGuardian Security Checks passed; Workers Builds pending. No waiting or rerun.
+- PR: [#2](https://github.com/qrati-labs/qrati-connect-angular-example/pull/2), open; latest verified head `7c6bcbb49f111b7cf838e7b820432648aa5c75a7`. Current mergeability is reported as `UNKNOWN` by GitHub. No issue linkage is applicable (report-only).
+- Latest checks read once after this head: GitGuardian Security Checks pending. No waiting or rerun.
 
 ## Timing
 
