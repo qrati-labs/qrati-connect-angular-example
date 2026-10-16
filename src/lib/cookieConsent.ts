@@ -35,22 +35,10 @@ export function initGtm(gtmId?: string): void {
   window.gtag = window.gtag || gtag;
 
   window.gtag('consent', 'default', {
-    ad_storage: 'granted',
-    analytics_storage: 'granted',
-    ad_user_data: 'granted',
-    ad_personalization: 'granted',
-  });
-  window.gtag('consent', 'default', {
     ad_storage: 'denied',
     analytics_storage: 'denied',
     ad_user_data: 'denied',
     ad_personalization: 'denied',
-    region: [
-      'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
-      'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
-      'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO',
-      'GB', 'CH',
-    ],
     wait_for_update: 500,
   });
 
@@ -124,11 +112,7 @@ export async function ensureCookieConsentInitialized(requiredParam?: boolean): P
   if (!initPromise) {
     initPromise = (async () => {
       const required = requiredParam !== undefined ? requiredParam : await checkConsentRequired();
-
-      if (!required) {
-        // Non-GDPR visitor (US, India, etc.): immediately grant analytics & ad consent
-        updateGtagConsent({ analytics: true, ads: true });
-      }
+      const hasStoredConsent = CookieConsent.validCookie('qrati_consent');
 
       await CookieConsent.run({
         mode: required ? 'opt-in' : 'opt-out',
@@ -157,15 +141,15 @@ export async function ensureCookieConsentInitialized(requiredParam?: boolean): P
         },
         onFirstConsent: () => {
           const accepted = CookieConsent.acceptedCategory('analytics');
-          updateGtagConsent({ analytics: accepted, ads: !required || accepted });
+          updateGtagConsent({ analytics: accepted, ads: accepted });
         },
         onConsent: () => {
           const accepted = CookieConsent.acceptedCategory('analytics');
-          updateGtagConsent({ analytics: accepted, ads: !required || accepted });
+          updateGtagConsent({ analytics: accepted, ads: accepted });
         },
         onChange: () => {
           const accepted = CookieConsent.acceptedCategory('analytics');
-          updateGtagConsent({ analytics: accepted, ads: !required || accepted });
+          updateGtagConsent({ analytics: accepted, ads: accepted });
         },
         guiOptions: {
           consentModal: {
@@ -240,6 +224,11 @@ export async function ensureCookieConsentInitialized(requiredParam?: boolean): P
           },
         },
       });
+
+      if (!required && !hasStoredConsent) {
+        const accepted = CookieConsent.acceptedCategory('analytics');
+        updateGtagConsent({ analytics: accepted, ads: accepted });
+      }
     })();
   }
 
