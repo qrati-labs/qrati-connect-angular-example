@@ -26,7 +26,7 @@ Added `src/lib/cookieConsent.spec.ts`:
 
 Intended command: `pnpm exec vitest run src/lib/cookieConsent.spec.ts` — **NOT RUN BY BUGHUNTER**. No tests, builds, lint, type-checks, installs, or package manager commands were run. `git diff --cached --check` passed.
 
-- PR: https://github.com/qrati-labs/qrati-connect-angular-example/pull/4 (open; mergeable; base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`; initial head `5500a380abbe24a156c0efdfa23fe1d010a1f527`; verified `Fixes #3` and closing issue reference).
+- PR: https://github.com/qrati-labs/qrati-connect-angular-example/pull/4 (open; mergeability `UNKNOWN` on final read-back; base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`; head `01b06d2b8c3f164a96b8ccfb37609d77726df853`; verified `Fixes #3` and closing issue reference).
 
 ## Limitations and disposition
 
@@ -35,6 +35,6 @@ The regression tests were authored but not executed per BugHunter's execution bo
 ## Timing
 
 - Start: `2026-10-16T17:39:38Z` / `2026-10-16 23:09:38 IST` (injected preflight start).
-- End: `2026-10-16T17:42:51Z` / `2026-10-16 23:12:51 IST`.
-- Total elapsed: 193 seconds (3m 13s).
+- End: `2026-10-16T17:45:42Z` / `2026-10-16 23:15:42 IST`.
+- Total elapsed: 364 seconds (6m 04s).
 - Phase-level durations: not captured; not estimated or backfilled.
