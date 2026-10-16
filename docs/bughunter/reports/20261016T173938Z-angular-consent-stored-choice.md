@@ -26,7 +26,7 @@ Added `src/lib/cookieConsent.spec.ts`:
 
 Intended command: `pnpm exec vitest run src/lib/cookieConsent.spec.ts` — **NOT RUN BY BUGHUNTER**. No tests, builds, lint, type-checks, installs, or package manager commands were run. `git diff --cached --check` passed.
 
-- PR: https://github.com/qrati-labs/qrati-connect-angular-example/pull/4 (open; mergeability `UNKNOWN` on final read-back; base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`; head `01b06d2b8c3f164a96b8ccfb37609d77726df853`; verified `Fixes #3` and closing issue reference).
+- PR: https://github.com/qrati-labs/qrati-connect-angular-example/pull/4 (open; mergeable on final API read before this tracker-only refresh; base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`; `Fixes #3` and closing issue reference verified).
 
 ## Limitations and disposition
 
