@@ -35,6 +35,6 @@ The regression tests were authored but not executed per BugHunter's execution bo
 ## Timing
 
 - Start: `2026-10-16T17:39:38Z` / `2026-10-16 23:09:38 IST` (injected preflight start).
-- End: `2026-10-16T17:45:42Z` / `2026-10-16 23:15:42 IST`.
-- Total elapsed: 364 seconds (6m 04s).
+- End: `2026-10-16T17:46:41Z` / `2026-10-16 23:16:41 IST`.
+- Total elapsed: 423 seconds (7m 03s).
 - Phase-level durations: not captured; not estimated or backfilled.
