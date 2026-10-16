@@ -31,21 +31,22 @@ Google Tag Platform documentation says to scope default settings to regions wher
 - Tests/build/lint/type-check/package-manager commands: NOT RUN BY BUG HUNTER (cron policy).
 - Intended developer/CI test command: `pnpm test` (script resolves to `ng test --watch=false`; not run here).
 - Issue: none (report-only).
-- PR/check status: pending creation and remote verification.
+- PR: [#2](https://github.com/qrati-labs/qrati-connect-angular-example/pull/2), open; head `5d8c421998c8225455ffb9d992a31c6325081067`; mergeable. Read-back confirmed no issue linkage is applicable (report-only).
+- Checks read once: GitGuardian Security Checks passed; Workers Builds pending. No waiting or rerun.
 
 ## Timing
 
-Elapsed wall time, UTC; boundary begins at the injected preflight start (`2026-10-16T09:50:39Z`) and ends when this report/PR phase is closed. Phase durations are recorded from the run timer; no duration is estimated. Any unclassified gaps are disclosed.
+Elapsed wall time, UTC; boundary begins at the injected preflight start (`2026-10-16T09:50:39Z`) and ends at `2026-10-16T09:53:53Z`, when the timing record was finalized. Phase durations are recorded by the run timer; no duration is estimated.
 
 | Phase | Elapsed |
 |---|---:|
 | Preflight | 00:01:08 |
 | Graph/scope | 00:00:45 |
 | Source review | 00:00:08 |
-| Report/PR | in progress |
+| Report/PR | 00:00:58 |
 | Issue search/create, research, test authoring, implementation, patch review | 00:00:00 (not applicable; report-only) |
-| Unclassified gaps | not yet finalized |
-| Total | pending finalization |
+| Unclassified gaps | 00:00:16 |
+| Total elapsed wall time | 00:03:14 (2026-10-16T09:50:39Z–2026-10-16T09:53:53Z) |
 
 ## Sources
 
