@@ -24,6 +24,6 @@ No regression test was authored because no defect was confirmed. Tests, builds, 
 ## Timing
 
 - Run start: `2026-10-17T16:30:39Z` (22:00:39 IST)
-- Report completion: `2026-10-17T16:32:08Z` (22:02:08 IST)
-- Measured total: `00:01:29` (22:00:39–22:02:08 IST)
+- Report completion: `2026-10-17T16:32:38Z` (22:02:38 IST)
+- Measured total: `00:01:59` (22:00:39–22:02:38 IST)
 - Phase breakdown: not recorded at phase boundaries; intentionally not estimated or backfilled.
