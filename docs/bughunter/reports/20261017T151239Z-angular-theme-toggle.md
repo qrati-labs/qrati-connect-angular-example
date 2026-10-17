@@ -22,9 +22,10 @@ No regression test authored: no confirmed bug. Existing application spec coverag
 ## Timing
 
 - Preflight: 2026-10-17 15:12:18–15:12:39 UTC (20:42:18–20:42:39 IST), 21 seconds, supplied by the run preflight.
-- Audit and delivery preparation: 2026-10-17 15:12:39–15:13:44 UTC (20:42:39–20:43:44 IST), 65 seconds, measured from run start and terminal timestamp.
-- Total: 2026-10-17 15:12:18–15:13:44 UTC (20:42:18–20:43:44 IST), 86 seconds.
+- Source audit and evidence review: 2026-10-17 15:12:39–15:13:44 UTC (20:42:39–20:43:44 IST), 65 seconds.
+- Documentation, PR creation, and readback: 2026-10-17 15:13:44–15:14:16 UTC (20:43:44–20:44:16 IST), 32 seconds.
+- Total: 2026-10-17 15:12:18–15:14:16 UTC (20:42:18–20:44:16 IST), 118 seconds.
 
 ## Delivery
 
-Report-only PR; no issue link. CI/check results are recorded separately from local execution and must be read back from the PR after opening.
+Report-only PR [#5](https://github.com/qrati-labs/qrati-connect-angular-example/pull/5); no issue link. Readback confirmed base `main` at `d4b48ec9fd6a0e86640e7c3900edc15112e37090`, head `69e30edb3ef53e67b1659026c3cb2b0ec4ca67d6`, both expected documentation files only, no closing issue references, and mergeable state. At 2026-10-17 15:14:09 UTC (20:44:09 IST), GitGuardian Security Checks and Workers Builds were both in progress; no completed CI result was observed.
