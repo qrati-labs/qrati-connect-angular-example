@@ -27,8 +27,8 @@ None confirmed. No issue or source/test edit warranted.
 ## Timing
 
 - Run start: 2026-10-17 22:56:39 UTC (2026-10-18 04:26:39 IST)
-- Report recorded: 2026-10-17 22:57:49 UTC (2026-10-18 04:27:49 IST)
-- Total elapsed wall time: 1m 10s (0.02 min), from provided preflight start through report completion; phase durations are not separately measured and are not estimated.
+- Report recorded: 2026-10-17 22:58:08 UTC (2026-10-18 04:28:08 IST)
+- Total elapsed wall time: 1m 29s (0.02 min), from provided preflight start through report completion; phase durations are not separately measured and are not estimated.
 
 ## Delivery
 
