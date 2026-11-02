@@ -1,6 +1,9 @@
 # BugHunter reports
 
 - [20261017T170738Z Angular example landing page audit](reports/20261017T170738Z-angular-home-page.md) — report-only; no confirmed defect.
+| Date (UTC) | Workflow | Result | Report |
+|---|---|---|---|
+| 2026-10-17 | Angular example web-component widget loader | No confirmed defect; report-only | [20261017T163039Z-angular-widget-loader.md](reports/20261017T163039Z-angular-widget-loader.md) |
 # BugHunter audit reports
 
 | Report | Scope | Disposition |
