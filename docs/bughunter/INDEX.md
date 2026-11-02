@@ -1,5 +1,6 @@
 # BugHunter reports
 
+- [20261017T225638Z-angular-worker-routing](reports/20261017T225638Z-angular-worker-routing.md) — Angular example Worker routing and HTML response handling; no confirmed defect; report-only.
 | Date (UTC) | Workflow | Result | Report |
 |---|---|---|---|
 | 2026-10-17 | Angular cookie preferences | No confirmed defect; report-only | [Audit](reports/20261017T204238Z-angular-cookie-preferences.md) |
